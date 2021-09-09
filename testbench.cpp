@@ -10,7 +10,7 @@ using namespace std;
 
 int main(void)
 {
-    vector<double> insig{12.0, 34.0, 54.0, 19.0};
+    vector<double> insig{12.0, 34.0, 54.0, 19.0, 12.0, 34.0, 54.0, 19.0};
     vector<complex<double>> myFFTOUTPUT = FFT(ConvertToComplex(insig));
     vector<double> myIFFTOUTPUT = DivByN(CmpMagnitude(IFFT(myFFTOUTPUT)));
     ofstream myFile;

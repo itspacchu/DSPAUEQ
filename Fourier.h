@@ -1,11 +1,38 @@
 #include <complex>
 #include <vector>
+#include <algorithm>
 double pi = 4 * atan(1.0);
 using namespace std;
+
+// ######### UTILITY ##############
 
 bool isPowerOfTwo(int n) // cuz fft really likes to simp powers of 2 values
 {
     return (ceil(log2(n)) == floor(log2(n))) && (n != 0);
+}
+
+vector<double> CmpMagnitude(vector<complex<double>> myFFTOUTPUT)
+{
+    vector<double> myFFTOUTPUT_abs;
+    for (int i = 0; i < myFFTOUTPUT.size(); i++)
+    {
+        myFFTOUTPUT_abs.push_back(abs(myFFTOUTPUT[i]));
+    }
+    return myFFTOUTPUT_abs;
+}
+
+vector<double> DivByN(vector<double> myFFTOUTPUT_abs, int N = 0)
+{
+    if (N == 0)
+    {
+        N = myFFTOUTPUT_abs.size(); // sanity no zero division ;-;
+    }
+    vector<double> DivbyNReturn;
+    for (int i = 0; i < myFFTOUTPUT_abs.size(); i++)
+    {
+        DivbyNReturn.push_back(myFFTOUTPUT_abs[i] / (double)N);
+    }
+    return DivbyNReturn;
 }
 
 vector<complex<double>> ConvertToComplex(vector<double> RealArr)
@@ -17,6 +44,11 @@ vector<complex<double>> ConvertToComplex(vector<double> RealArr)
     }
     return retarr;
 }
+
+// #######################################
+
+// ############ FFT ALGOS ################
+// Souces https://www.youtube.com/watch?v=h7apO7q16V0&ab_channel=Reducible
 
 vector<complex<double>> FFT(vector<complex<double>> arr) // needs 2^n no of samples input!!
 {
@@ -51,6 +83,14 @@ vector<complex<double>> FFT(vector<complex<double>> arr) // needs 2^n no of samp
 }
 
 vector<complex<double>> IFFT(vector<complex<double>> arr)
+{
+    vector<complex<double>> SampArr;
+    reverse(arr.begin(), arr.end());
+    SampArr = FFT(arr);
+    return DivByN(CmpMagnitude(SampArr));
+}
+
+vector<complex<double>> IFFT_OLD(vector<complex<double>> arr)
 {
     int n = arr.size();
     if (n == 1)
@@ -97,28 +137,4 @@ vector<complex<double>> FFT_OLD(vector<complex<double>> arr)
         retarr.push_back(even[k] - t);
     }
     return retarr;
-}
-
-vector<double> CmpMagnitude(vector<complex<double>> myFFTOUTPUT)
-{
-    vector<double> myFFTOUTPUT_abs;
-    for (int i = 0; i < myFFTOUTPUT.size(); i++)
-    {
-        myFFTOUTPUT_abs.push_back(abs(myFFTOUTPUT[i]));
-    }
-    return myFFTOUTPUT_abs;
-}
-
-vector<double> DivByN(vector<double> myFFTOUTPUT_abs, int N = 0)
-{
-    if (N == 0)
-    {
-        N = myFFTOUTPUT_abs.size(); // sanity no zero division ;-;
-    }
-    vector<double> DivbyNReturn;
-    for (int i = 0; i < myFFTOUTPUT_abs.size(); i++)
-    {
-        DivbyNReturn.push_back(myFFTOUTPUT_abs[i] / (double)N);
-    }
-    return DivbyNReturn;
 }
