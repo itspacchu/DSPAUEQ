@@ -3,8 +3,8 @@
 #include <vector>
 #include <complex>
 #include <fstream>
-#include "DSP/DSP.h"
-#include "DSP/Fourier.h"
+#include "DSP/wave.h"    // Reading and writing wave files
+#include "DSP/fourier.h" // Fourier Computations are here
 
 using namespace std;
 

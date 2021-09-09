@@ -3,14 +3,14 @@
 #include <vector>
 #include <complex>
 #include <fstream>
-#include "DSP/DSP.h"
-#include "DSP/Fourier.h"
+#include "DSP/wave.h"
+#include "DSP/fourier.h"
 
 using namespace std;
 
 int main(void)
 {
-    vector<double> insig{12.0, 34.0, 54.0, 19.0, 12.0, 34.0, 54.0, 19.0};
+    vector<double> insig{12.4, 34.3, 54.2, 19.1, 12.1, 34.2, 54.3, 19.4};
     vector<complex<double>> myFFTOUTPUT = FFT(ConvertToComplex(insig));
     vector<double> myIFFTOUTPUT = IFFT(myFFTOUTPUT);
     ofstream myFile;
