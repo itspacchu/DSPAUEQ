@@ -49,13 +49,19 @@ vector<complex<double>> ConvertToComplex(vector<double> RealArr)
 }
 
 /*
- *          FFT ALGOS
- *  https://youtu.be/h7apO7q16V0
+ *   Source of this algo :O
+ *   https://youtu.be/h7apO7q16V0
  * 
  */
 
-vector<complex<double>> FFT(vector<complex<double>> arr) // needs 2^n no of samples input!!
+/*
+ Computes the FFT of the given Complex Vector sequence
+ params : vector<complex<double>> arr <- input sequence
+ returns: vector<complex<double>> freqbins <- frequency bins [k]
+ */
+vector<complex<double>> FFT(vector<complex<double>> arr)
 {
+    // needs 2^n no of samples input!!
     int n = arr.size();
     if (n == 1)
     {
@@ -86,6 +92,11 @@ vector<complex<double>> FFT(vector<complex<double>> arr) // needs 2^n no of samp
     return freqbin;
 }
 
+/*
+ Computes the IFFT of the given Complex Vector sequence
+ params : vector<complex<double>> arr <- input sequence 
+ returns: vector<double> IFFT Sequence <- frequency bins [k]
+ */
 vector<double> IFFT(vector<complex<double>> arr)
 {
     vector<complex<double>> SampArr;
