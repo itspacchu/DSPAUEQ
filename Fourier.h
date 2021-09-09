@@ -4,7 +4,10 @@
 double pi = 4 * atan(1.0);
 using namespace std;
 
-// ######### UTILITY ##############
+/*
+ *   Utility
+ * 
+ */
 
 bool isPowerOfTwo(int n) // cuz fft really likes to simp powers of 2 values
 {
@@ -45,10 +48,11 @@ vector<complex<double>> ConvertToComplex(vector<double> RealArr)
     return retarr;
 }
 
-// #######################################
-
-// ############ FFT ALGOS ################
-// Souces https://www.youtube.com/watch?v=h7apO7q16V0&ab_channel=Reducible
+/*
+ *          FFT ALGOS
+ *  https://youtu.be/h7apO7q16V0
+ * 
+ */
 
 vector<complex<double>> FFT(vector<complex<double>> arr) // needs 2^n no of samples input!!
 {
