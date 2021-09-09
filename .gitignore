@@ -1,2 +1,6 @@
 *.out
 *.wav
+.vscode
+numcpp
+cairo-master
+.cmake

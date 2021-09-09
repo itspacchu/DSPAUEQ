@@ -1,0 +1,2 @@
+/Volumes/PacSSD/Documents/Coding/DSPthingyLIB/build/CMakeFiles/rebuild_cache.dir
+/Volumes/PacSSD/Documents/Coding/DSPthingyLIB/build/CMakeFiles/edit_cache.dir
