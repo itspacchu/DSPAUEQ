@@ -3,8 +3,8 @@
 #include <vector>
 #include <complex>
 #include <fstream>
-#include "DSP.h"
-#include "Fourier.h"
+#include "DSP/DSP.h"
+#include "DSP/Fourier.h"
 
 using namespace std;
 

@@ -86,7 +86,7 @@ vector<complex<double>> FFT(vector<complex<double>> arr) // needs 2^n no of samp
     return freqbin;
 }
 
-vector<complex<double>> IFFT(vector<complex<double>> arr)
+vector<double> IFFT(vector<complex<double>> arr)
 {
     vector<complex<double>> SampArr;
     reverse(arr.begin(), arr.end());
