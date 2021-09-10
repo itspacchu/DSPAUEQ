@@ -1,5 +1,7 @@
+#include <fstream>
 #include <vector>
-#include "tqdm/tqdm.h"
+#include <iostream>
+// #include "tqdm/tqdm.h"
 using namespace std;
 
 typedef struct header_file
@@ -49,17 +51,19 @@ vector<double> ReadWaveFile(string filename)
     return inSignal;
 }
 
-vector<double> WriteWaveFile(string filename, <vector<double>> Sequence, double ScaleNormalize, header_p headerValues, int BUFFERSIZE = 512)
-{
-    FILE *writeWave = fopen(filename.c_str(), "wb");
-    fwrite(headerValues, 1, writeWave);
-    int NoOfBytes = 0;
-    short int buff16[BUFFERSIZE];
-    for (double &indx : tqdm::tqdm(Sequence))
-    {
-        NoOfBytes = Sequence.size() > BUFFERSIZE ? BUFFERSIZE : BUFFERSIZE - Sequence.size();
-        // buff16 fix loop it with increments of short int
-        count++;
-        fwrite(buff16, 1, nb, outfile);
-    }
-}
+// vector<double> WriteWaveFile(string filename, vector<double> Sequence, double ScaleNormalize, header_p headerValues, int BUFFERSIZE = 512)
+// {
+//     FILE *writeWave = fopen(filename.c_str(), "wb");
+//     fwrite(headerValues, 1, writeWave);
+//     int nb;
+//     int count = 0;
+//     int NoOfBytes = 0;
+//     short int buff16[BUFFERSIZE];
+//     for (double &indx : tqdm::tqdm(Sequence))
+//     {
+//         NoOfBytes = Sequence.size() > BUFFERSIZE ? BUFFERSIZE : BUFFERSIZE - Sequence.size();
+//         // buff16 fix loop it with increments of short int
+//         count++;
+//         fwrite(buff16, 1, nb, outfile);
+//     }
+// }

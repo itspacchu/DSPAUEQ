@@ -3,21 +3,23 @@
 #include <vector>
 #include <complex>
 #include <fstream>
-#include "DSP/wave.h"
+// #include "wave/wave.h"
 #include "DSP/fourier.h"
 
 using namespace std;
 
 int main(void)
 {
-    vector<double> insig{12.4, 34.3, 54.2, 19.1, 12.1, 34.2, 54.3, 19.4};
-    vector<complex<double>> myFFTOUTPUT = FFT(ConvertToComplex(insig));
-    vector<double> myIFFTOUTPUT = IFFT(myFFTOUTPUT);
+    vector<double> insig{12.4345345345, 34.3, 54.2, 19.1, 12.1, 34.2, 54.3, 19.4};
+    Fourier Process;
+    Process.timeDomainVal = insig;
+    vector<complex<double>> freqDomain = Process.FFT();
+    vector<double> timeDomain = Process.IFFT();
     ofstream myFile;
     myFile.open("test2.txt");
-    for (int i = 0; i < myIFFTOUTPUT.size(); i++)
+    for (int i = 0; i < timeDomain.size(); i++)
     {
-        myFile << myIFFTOUTPUT[i] << endl;
+        myFile << timeDomain[i] << endl;
     }
     myFile.close();
 }

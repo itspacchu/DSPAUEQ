@@ -1,9 +1,3 @@
-*.out
-*.wav
 .vscode
 .cmake
-*.exe
-*.o
-*.out
 *.gch
-test2.txt

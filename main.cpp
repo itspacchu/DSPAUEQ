@@ -3,7 +3,7 @@
 #include <vector>
 #include <complex>
 #include <fstream>
-#include "DSP/wave.h"    // Reading and writing wave files
+#include "wave/wave.h"   // Reading and writing wave files
 #include "DSP/fourier.h" // Fourier Computations are here
 
 using namespace std;
@@ -18,12 +18,15 @@ int main(void)
     cout << SignalFloats.size() << endl;
 
     //perform fft
-    vector<complex<double>> SignalComplex = FFT(ConvertToComplex(SignalFloats));
+    Fourier Process;
+    Process.timeDomainVal = SignalFloats;
+    vector<complex<double>> freqDomain = Process.FFT();
+    vector<double> timeDomain = Process.IFFT();
 
-    cout << SignalComplex.size() << endl;
+    cout << timeDomain.size() << endl;
     //print all pls
-    for (int i = 0; i < SignalComplex.size(); i++)
+    for (int i = 0; i < timeDomain.size(); i++)
     {
-        cout << SignalComplex[i] << endl;
+        cout << timeDomain[i] - SignalFloats[i] << endl;
     }
 }
