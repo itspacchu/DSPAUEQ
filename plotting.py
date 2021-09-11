@@ -4,12 +4,14 @@ import matplotlib.pyplot as plt
 # csv file name
 filename = str(sys.argv[1])
 print(filename)
-with open(filename, 'r') as csvfile:
-    # get number of columns
-    reader = csv.reader(csvfile)
-    x = y = []
-    for row in reader:
-        x.append(float(row[0]))
-        y.append(float(row[1]))
+x,y = [],[]
+myfile = open(filename, 'r')
+
+for i in myfile.readlines():
+    thing = i.split(',')
+    x.append(thing[0])
+    y.append(thing[1])
+myfile.close()
+
 plt.plot(x, y)
 plt.savefig(filename + '.png')

@@ -80,6 +80,9 @@ public:
         {
             throw 404;
         }
+        if(!isPowerOfTwo(timeDomainVal.size())){
+            cout << "Input signal not a perfect power of 2 .. Unexpected distortions might occur!!" << endl;
+        }
         freqDomainVal = FFT_REC(ConvertToComplex(timeDomainVal));
         return freqDomainVal;
     }

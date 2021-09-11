@@ -11,7 +11,7 @@ using namespace std;
 int main(void)
 {
     d_vec insig;
-    for(int i = 0; i < 100; i++)
+    for(int i = 0; i < 128; i++)
     {
         insig.push_back(sin(4*M_PI*i/100));
     }
@@ -25,7 +25,7 @@ int main(void)
     myFile.open("test2.txt");
     for (int i = 0; i < timeDomain.size(); i++)
     {
-        myFile << freqDomain[i] << "," << freqs[i] << endl;
+        myFile << freqs[i] << "," << freqDomain[i]  << endl;
     }
     myFile.close();
 }
