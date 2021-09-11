@@ -1,12 +1,20 @@
 #include "../include/includes.h"
 using namespace std;
 
+double sinc(double x) {
+    if (x == 0) {
+        return 1;
+    } else {
+        return sin(x) / x;
+    }
+}
+
 int main(void)
 {
     d_vec insig;
-    for(int i = 0; i < 128; i++)
+    for(int i = 0; i < 256; i++)
     {
-        insig.push_back(sin(4*M_PI*i/100));
+        insig.push_back(sin(2*M_PI*i/10) + sin(3*M_PI*i/10));
     }
 
     Fourier Process;
@@ -16,7 +24,7 @@ int main(void)
     d_vec timeDomain = Process.RIFFT();
     ofstream myFile;
     myFile.open("test2.txt");
-    for (int i = 0; i < timeDomain.size(); i++)
+    for (int i = 0; i < (int)timeDomain.size()/2; i++)
     {
         myFile << freqs[i] << "," << freqDomain[i]  << endl;
     }
