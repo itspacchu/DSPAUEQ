@@ -1,4 +1,5 @@
 import sys
+import os
 import csv
 import matplotlib.pyplot as plt
 # csv file name
@@ -12,6 +13,6 @@ for i in myfile.readlines():
     x.append(thing[0])
     y.append(thing[1])
 myfile.close()
-
+os.system('rm ' + filename)
 plt.plot(x, y)
 plt.savefig(filename.split('.')[0] + '.png')
