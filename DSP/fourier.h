@@ -22,12 +22,12 @@ double pi = 4 * atan(1.0);
 class Fourier
 {
 private:
-    d_vec FREQS_BY_LEN(int n, double d = 1.0)
+    d_vec FREQS_BY_LEN(int n,bool RightSided = true ,double d = 1.0)
     {
         auto val = 1.0 / (n * d);
         auto N = (int)(n / 2 + 1);
         d_vec results;
-        for (int i = 0; i < N; i++)
+        for (int i = RightSided ? 0 : -N; i < N; i++)
         {
             results.push_back(val * i);
         }
@@ -80,9 +80,6 @@ public:
         {
             throw 404;
         }
-        if(!isPowerOfTwo(timeDomainVal.size())){
-            cout << "Input signal not a perfect power of 2 .. Unexpected distortions might occur!!" << endl;
-        }
         freqDomainVal = FFT_REC(ConvertToComplex(timeDomainVal));
         return freqDomainVal;
     }
@@ -104,22 +101,28 @@ public:
     {
         return FREQS_BY_LEN(n, d);
     }
-
+    // Computing Real Fourier Transform of a signal
     d_vec RFFT()
     {
         if (timeDomainVal.empty())
         {
             throw 404;
         }
+        if(!isPowerOfTwo(timeDomainVal.size())){
+            cout << "Input signal not a perfect power of 2 .. Unexpected distortions might occur!!" << endl;
+        }
         freqDomainVal = FFT_REC(ConvertToComplex(timeDomainVal));
         return CmpMagnitude(freqDomainVal);
     }
-
+    // Computing Real Inverse Fourier Transform of a signal
     d_vec RIFFT()
     {
         if (freqDomainVal.empty())
         {
             throw 404;
+        }
+        if(!isPowerOfTwo(timeDomainVal.size())){
+            cout << "Input signal not a perfect power of 2 .. Unexpected distortions might occur!!" << endl;
         }
         comp_vec temp = freqDomainVal;
         reverse(temp.begin(), temp.end());
