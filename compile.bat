@@ -1,1 +1,0 @@
-g++ -std=c++17 -I.\DSP .\testbench.cpp -o testbench.exe

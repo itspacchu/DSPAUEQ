@@ -1,11 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <complex>
-#include <fstream>
-#include "wave/wave.h"   // Reading and writing wave files
-#include "DSP/fourier.h" // Fourier Computations are here
-
+#include "includes.h"
 using namespace std;
 
 int main(void)
@@ -14,19 +7,24 @@ int main(void)
     string fileName;
     cout << "Enter the name of the file: ";
     cin >> fileName;
-    vector<double> SignalFloats = ReadWaveFile(fileName);
+    d_vec SignalFloats = ReadWaveFile(fileName);
     cout << SignalFloats.size() << endl;
 
     //perform fft
     Fourier Process;
     Process.timeDomainVal = SignalFloats;
-    vector<complex<double>> freqDomain = Process.FFT();
-    vector<double> timeDomain = Process.IFFT();
-
-    cout << timeDomain.size() << endl;
+    d_vec freqDomain = Process.RFFT();
+    d_vec freq_vals = Process.FFT_FREQS(freqDomain.size());
     //print all pls
-    for (int i = 0; i < timeDomain.size(); i++)
+    cout << "Size of input file (samples)" << Process.timeDomainVal.size() << endl;
+    cout << "Frequency Domain: " << endl;
+    ofstream myFile;
+    myFile.open("plotvals.csv");
+    for (int i = 0; i < freqDomain.size(); i++)
     {
-        cout << timeDomain[i] - SignalFloats[i] << endl;
+        myFile << freqDomain[i] << "," << freq_vals[i] << endl;
     }
+    myFile.close();
+    std::system("python3 plotting.py plotvals.csv");
+    return 0;
 }

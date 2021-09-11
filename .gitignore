@@ -1,3 +1,6 @@
 .vscode
 .cmake
 *.gch
+*.cmake 
+build
+*.out

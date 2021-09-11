@@ -10,16 +10,22 @@ using namespace std;
 
 int main(void)
 {
-    vector<double> insig{12.4345345345, 34.3, 54.2, 19.1, 12.1, 34.2, 54.3, 19.4};
+    d_vec insig;
+    for(int i = 0; i < 100; i++)
+    {
+        insig.push_back(sin(4*M_PI*i/100));
+    }
+
     Fourier Process;
     Process.timeDomainVal = insig;
-    vector<complex<double>> freqDomain = Process.FFT();
-    vector<double> timeDomain = Process.IFFT();
+    d_vec freqDomain = Process.RFFT();
+    d_vec freqs = Process.FFT_FREQS(freqDomain.size());
+    d_vec timeDomain = Process.RIFFT();
     ofstream myFile;
     myFile.open("test2.txt");
     for (int i = 0; i < timeDomain.size(); i++)
     {
-        myFile << timeDomain[i] << endl;
+        myFile << freqDomain[i] << "," << freqs[i] << endl;
     }
     myFile.close();
 }

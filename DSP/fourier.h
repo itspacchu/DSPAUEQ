@@ -1,28 +1,40 @@
 #include <complex>
 #include <vector>
 #include <algorithm>
-#include "utills.h"
+#include "utils.h"
 using namespace std;
 
-// double pi = 4 * atan(1.0);
+#ifdef __linux__
 double pi = M_PI;
+#else
+double pi = 4 * atan(1.0);
+#endif
 
 /*
- *   Source of this algo :O
- *   https://youtu.be/h7apO7q16V0
- * 
- */
-
-/*
+ Source of this algo :O
+ https://youtu.be/h7apO7q16V0
+ 
  Computes the FFT of the given Complex Vector sequence
- params : vector<complex<double>> arr <- input sequence
- returns: vector<complex<double>> freqbins <- frequency bins [k]
+ params : comp_vec arr <- input sequence
+ returns: comp_vec freqbins <- frequency bins [k]
  */
 
 class Fourier
 {
 private:
-    vector<complex<double>> FFT_REC(vector<complex<double>> arr)
+    d_vec FREQS_BY_LEN(int n, double d = 1.0)
+    {
+        auto val = 1.0 / (n * d);
+        auto N = (int)(n / 2 + 1);
+        d_vec results;
+        for (int i = 0; i < N; i++)
+        {
+            results.push_back(val * i);
+        }
+        return results;
+    }
+
+    comp_vec FFT_REC(comp_vec arr)
     {
         // needs 2^n no of samples input!!
         int n = arr.size();
@@ -32,8 +44,8 @@ private:
         }
         // split into even and odd subsums
         int half = n / 2;
-        vector<complex<double>> Xeven(half, 0);
-        vector<complex<double>> Xodd(half, 0);
+        comp_vec Xeven(half, 0);
+        comp_vec Xodd(half, 0);
 
         for (int i = 0; i != half; i++)
         {
@@ -41,13 +53,13 @@ private:
             Xodd[i] = arr[2 * i + 1];
         }
 
-        vector<complex<double>> Feven(half, 0);
+        comp_vec Feven(half, 0);
         Feven = FFT_REC(Xeven);
-        vector<complex<double>> Fodd(half, 0);
+        comp_vec Fodd(half, 0);
         Fodd = FFT_REC(Xodd);
 
         // need a single sample at end
-        vector<complex<double>> freqbin(n, 0);
+        comp_vec freqbin(n, 0);
         for (int k = 0; k != half; k++)
         {
             complex<double> cmpexp = polar(1.0, -2 * pi * k / n) * Fodd[k];
@@ -58,11 +70,11 @@ private:
     }
 
 public:
-    vector<double> timeDomainVal{};
-    vector<complex<double>> freqDomainVal{};
+    d_vec timeDomainVal{};
+    comp_vec freqDomainVal{};
 
     Fourier() {}
-    vector<complex<double>> FFT()
+    comp_vec FFT()
     {
         if (timeDomainVal.empty())
         {
@@ -72,15 +84,43 @@ public:
         return freqDomainVal;
     }
 
-    vector<double> IFFT()
+    /*
+    Parameters
+    ----------
+    n : int
+        Window length.
+    d : scalar, optional
+        Sample spacing (inverse of the sampling rate). Defaults to 1.
+
+    Returns
+    -------
+    f : vector<double>
+        Array of length ``n//2 + 1`` containing the sample frequencies.
+    */
+    d_vec FFT_FREQS(int n, double d = 1.0)
+    {
+        return FREQS_BY_LEN(n, d);
+    }
+
+    d_vec RFFT()
+    {
+        if (timeDomainVal.empty())
+        {
+            throw 404;
+        }
+        freqDomainVal = FFT_REC(ConvertToComplex(timeDomainVal));
+        return CmpMagnitude(freqDomainVal);
+    }
+
+    d_vec RIFFT()
     {
         if (freqDomainVal.empty())
         {
             throw 404;
         }
-        vector<complex<double>> temp = freqDomainVal;
+        comp_vec temp = freqDomainVal;
         reverse(temp.begin(), temp.end());
-        vector<complex<double>> SampArr = FFT_REC(temp);
+        comp_vec SampArr = FFT_REC(temp);
         timeDomainVal = DivByN(CmpMagnitude(SampArr));
         return timeDomainVal;
     }
@@ -88,11 +128,11 @@ public:
 
 /*
  Computes the IFFT of the given Complex Vector sequence
- params : vector<complex<double>> arr <- input sequence 
- returns: vector<double> IFFT Sequence <- frequency bins [k]
+ params : comp_vec arr <- input sequence 
+ returns: d_vec IFFT Sequence <- frequency bins [k]
  */
 
-vector<complex<double>> IFFT_OLD(vector<complex<double>> arr)
+comp_vec IFFT(comp_vec arr)
 {
     int n = arr.size();
     if (n == 1)
@@ -101,20 +141,20 @@ vector<complex<double>> IFFT_OLD(vector<complex<double>> arr)
     }
     // split into even and odd subsums
     int half = n / 2;
-    vector<complex<double>> Xeven(half, 0);
-    vector<complex<double>> Xodd(half, 0);
+    comp_vec Xeven(half, 0);
+    comp_vec Xodd(half, 0);
 
     for (int i = 0; i != half; i++)
     {
         Xeven[i] = arr[2 * i];
         Xodd[i] = arr[2 * i + 1];
     }
-    vector<complex<double>> Feven(half, 0);
+    comp_vec Feven(half, 0);
     // Feven = FFT(Xeven);
-    vector<complex<double>> Fodd(half, 0);
+    comp_vec Fodd(half, 0);
     // Fodd = FFT(Xodd);
     // need a single sample at end
-    vector<complex<double>> freqbin(n, 0);
+    comp_vec freqbin(n, 0);
     for (int k = 0; k != half; k++)
     {
         complex<double> cmpexp = polar(1.0, 2 * pi * k / n) * Fodd[k] * (1 / (double)n);
@@ -124,14 +164,14 @@ vector<complex<double>> IFFT_OLD(vector<complex<double>> arr)
     return freqbin;
 }
 
-vector<complex<double>> FFT_OLD(vector<complex<double>> arr)
+comp_vec FFT_OLD(comp_vec arr)
 {
     int n = arr.size();
     if (n == 1)
         return arr;
-    // vector<complex<double>> even = FFT(vector<complex<double>>(arr.begin(), arr.begin() + n / 2));
-    // vector<complex<double>> odd = FFT(vector<complex<double>>(arr.begin() + n / 2, arr.end()));
-    vector<complex<double>> retarr;
+    // comp_vec even = FFT(comp_vec(arr.begin(), arr.begin() + n / 2));
+    // comp_vec odd = FFT(comp_vec(arr.begin() + n / 2, arr.end()));
+    comp_vec retarr;
     for (int k = 0; k < n / 2; k++)
     {
         // complex<double> t = polar(1.0, -2 * pi * k / n) * odd[k];
