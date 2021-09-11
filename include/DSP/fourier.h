@@ -22,16 +22,16 @@ double pi = 4 * atan(1.0);
 class Fourier
 {
 private:
-    d_vec FREQS_BY_LEN(int n, double d = 1.0)
+    d_vec FREQS_BY_LEN(int n, double fs = 1.0)
     {
-        auto val = 1.0 / (n * d);
-        auto N = (int)(n / 2 + 1);
-        d_vec results;
-        for (int i = 0; i < N; i++)
-        {
-            results.push_back(val * i);
+        d_vec freqs;
+        for (int i = 0; i < fs/2; i+=fs/n){
+            freqs.push_back(i);
         }
-        return results;
+        for (int i = 1; i < fs/2; i+=fs/n){
+            freqs.push_back(-i);
+        }
+        return freqs;
     }
 
     comp_vec FFT_REC(comp_vec arr)

@@ -1,90 +1,46 @@
 #include <complex>
 #include <vector>
 #include <cmath>
-#include "utils.h"
-#include "fourier.h"
 #define PI 3.141592653589
 #define TWOPI 6.28318530718
 
 using namespace std;
-class Filter
-{
-    enum WindowType
-    {
-        hamming,
-        hanning,
-        blackman,
-        rectangular
-    };
 
-public:
-    vector<double> filterVal;
-    vector<double> InSignal;
-    // size
-    Filter(Fourier fourier, int size, double cutoff, double sampling_rate, WindowType window_type = hamming)
-    {
+// Hamming Window (N-point)
+d_vec hamming_window(int N){
+    d_vec w(N);
+    for(int i=0; i<N; i++){
+        w[i] = 0.54 - 0.46*cos(TWOPI*i/(N-1));
     }
+    return w;
+}
+// Hanning Window (N-point)
+d_vec hanning_window(int N){
+    d_vec w(N);
+    for(int i=0; i<N; i++){
+        w[i] = 0.5 - 0.5*cos(TWOPI*i/(N-1));
+    }
+    return w;
+}
 
-    // windows
-    vector<double> window(WindowType type, int size)
-    {
-        vector<double> window;
-        switch (type)
-        {
-        case 0:
-            window = hamming_window(size);
-            break;
-        case 1:
-            window = hanning_window(size);
-            break;
-        case 2:
-            window = blackman_window(size);
-            break;
-        default:
-            window = rectangular_window(size);
-            break;
-        }
-        return window;
+d_vec blackman_window(int N){
+    d_vec w(N);
+    for(int i=0; i<N; i++){
+        w[i] = 0.42 - 0.5*cos(TWOPI*i/(N-1)) + 0.08*cos(2*TWOPI*i/(N-1));
     }
+    return w;
+}
 
-private:
-    vector<double> hamming_window(int size)
-    {
-        vector<double> window;
-        for (int i = 0; i < size; i++)
-        {
-            window.push_back(0.54 - 0.46 * cos(TWOPI * i / (size - 1)));
-        }
-        return window;
-    }
 
-    vector<double> hanning_window(int size)
-    {
-        vector<double> window;
-        for (int i = 0; i < size; i++)
-        {
-            window.push_back(0.5 - 0.5 * cos(TWOPI * i / (size - 1)));
-        }
-        return window;
+// Convolves two vectors of same length
+d_vec convolve(d_vec x, d_vec w){
+    if(x.size() != w.size()){
+        cout << "Error: convolve_window: x and w must be the same size" << endl;
+        return x;
     }
-
-    vector<double> blackman_window(int size)
-    {
-        vector<double> window;
-        for (int i = 0; i < size; i++)
-        {
-            window.push_back(0.42 - 0.5 * cos(TWOPI * i / (size - 1)) + 0.08 * cos(2 * TWOPI * i / (size - 1)));
-        }
-        return window;
+    d_vec y(x.size());
+    for(int i=0; i<x.size(); i++){
+        y[i] = x[i]*w[i];
     }
-
-    vector<double> rectangular_window(int size)
-    {
-        vector<double> window;
-        for (int i = 0; i < size; i++)
-        {
-            window.push_back(1);
-        }
-        return window;
-    }
-};
+    return y;
+}

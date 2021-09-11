@@ -11,6 +11,13 @@ using namespace std;
  * 
  */
 
+d_vec slicer(d_vec x, int start, int end){
+   d_vec y(end-start);
+   for(int i=start; i<end; i++)
+      y[i-start] = x[i];
+   return y;
+}
+
 bool isPowerOfTwo(int n) // cuz fft really likes to simp powers of 2 values
 {
    return (ceil(log2(n)) == floor(log2(n))) && (n != 0);

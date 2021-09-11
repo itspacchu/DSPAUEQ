@@ -1,4 +1,4 @@
-if [ "$1" == "-t" ];
+if (( "$1" == "-t" ));
 then
    echo "Using the testbench script"
    g++ -std=c++17 -I./DSP ./tests/testbench.cpp -o build/testbenchOut
