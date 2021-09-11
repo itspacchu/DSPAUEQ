@@ -14,4 +14,4 @@ for i in myfile.readlines():
 myfile.close()
 
 plt.plot(x, y)
-plt.savefig(filename + '.png')
+plt.savefig(filename.split('.')[0] + '.png')

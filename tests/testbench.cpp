@@ -1,11 +1,4 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <complex>
-#include <fstream>
-// #include "wave/wave.h"
-#include "DSP/fourier.h"
-
+#include "../include/includes.h"
 using namespace std;
 
 int main(void)
