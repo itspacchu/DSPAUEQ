@@ -4,7 +4,7 @@ using namespace std;
 
 int main(void)
 {
-    d_vec EQ_SETTINGS = {5.0,2.0,0.0,2.0,10.0,0.0,1.0,3.0,5.0};
+    d_vec EQ_SETTINGS = {1.4,5.0,0.2,2.0,3.0,1.0,1.0,3.0,5.0};
     AudioFile<double> songfile;
     songfile.load("build/test.wav");
     int sizeOfBuffer = songfile.getNumSamplesPerChannel();
@@ -60,7 +60,8 @@ int main(void)
             myFile.open("buffer.txt");
             for (int i = 0; i < (int)WINDOW/2; i++)
             {
-                myFile << i << "," << Signal[i] << "," << filtered_time[i] << endl;
+                //myFile << i << "," << Signal[i] << "," << filtered_time[i] << endl;
+                myFile << i << "," << freqDomain[i] << "," << eq_filtered[i] << "," << EQ_INTERPOLATED[i] << endl;
             }
             myFile.close();
             string mycmd = "python plotting.py buffer.txt"; //+ to_string((int)start/WINDOW);
