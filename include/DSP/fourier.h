@@ -69,6 +69,19 @@ private:
         return freqbin;
     }
 
+    d_vec FixPower2Issue(d_vec input){
+        if(isPowerOfTwo(input.size())){
+            return input;
+        }else{
+            int pow2 = ceil(log2(input.size()));
+            d_vec returnarr = input;
+            for(int k = input.size(); k < pow(2,pow2) ; k++){
+                returnarr.push_back(0.0);
+            }
+            return returnarr;
+        }
+    }
+
 public:
     d_vec timeDomainVal{};
     comp_vec freqDomainVal{};
@@ -80,7 +93,7 @@ public:
         {
             throw 404;
         }
-        freqDomainVal = FFT_REC(ConvertToComplex(timeDomainVal));
+        freqDomainVal = FFT_REC(ConvertToComplex(FixPower2Issue(timeDomainVal)));
         return freqDomainVal;
     }
 
@@ -107,6 +120,10 @@ public:
         if (timeDomainVal.empty())
         {
             throw 404;
+        }
+        if(!isPowerOfTwo(timeDomainVal.size())){
+            cout << "Signal is not Power of 2" << endl;
+            timeDomainVal = FixPower2Issue(timeDomainVal);
         }
         freqDomainVal = FFT_REC(ConvertToComplex(timeDomainVal));
         return CmpMagnitude(freqDomainVal);

@@ -17,11 +17,11 @@ for i in myfile.readlines():
     y.append(float(thing[1].replace("\n","")))
 
 myfile.close()
-os.system('rm ' + filename)
+#os.system('rm ' + filename)
 if(len(x) <= 64):
-    plt.stem(x,np.log(y))
+    plt.stem(x,y)
 else:
-    plt.plot(x,np.abs(np.log10(y)))
+    plt.plot(x,y)
 plt.xlim(min(x), max(x))
 #plt.ylim(min(y), max(y))
 maxfreq = 2*max(y)/(len(x)/2)
