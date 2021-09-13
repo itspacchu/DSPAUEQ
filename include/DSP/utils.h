@@ -25,6 +25,18 @@ d_vec slicer(d_vec x, int offset=0, int WINDOW=512){
    return y;
 }
 
+double LinearInterpolate(double y1,double y2,double mu)
+{
+   return(y1*(1-mu)+y2*mu);
+}
+
+double CosineInterpolate(double y1,double y2,double mu)
+{
+   double mu2;
+   mu2 = (1-cos(mu*M_PI))/2;
+   return(y1*(1-mu2)+y2*mu2);
+}
+
 /*
 Adds additional samples between points aka Interpolation
 source : http://paulbourke.net/miscellaneous/interpolation/
@@ -32,8 +44,16 @@ source : http://paulbourke.net/miscellaneous/interpolation/
 input  : vector<double> in , float resample
 output : new interpolated signal
 */
-d_vec lerp(d_vec in,float resample){
-   // need a linear interpolator
+d_vec Interpolate(d_vec in,int upsample,int downsample=1){
+   d_vec retArr((in.size()-1)*upsample);
+   int n = 0;
+   for(int i = 0;i < in.size()-1;i++){
+      for(int j=0;j<upsample;j++){
+         retArr[n] = CosineInterpolate(in[i],in[i+1],(float)j/(float)upsample);
+         n++;
+      }
+   }
+   return retArr;
 }
 
 bool isPowerOfTwo(int n) // cuz fft really likes to simp powers of 2 values
@@ -74,3 +94,4 @@ vector<complex<double>> ConvertToComplex(vector<double> RealArr)
    }
    return retarr;
 }
+

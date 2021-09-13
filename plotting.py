@@ -25,13 +25,13 @@ myfile.close()
 if(len(x) <= 64):
     plt.stem(x,y)
 else:
-    plt.plot(x,np.log10(np.abs(y)))
+    plt.plot(x,np.abs(y))
     try:
-        plt.plot(x,np.log10(np.abs(z)))
+        plt.plot(x,np.abs(z))
     except:
         pass
 plt.xlim(min(x), max(x))
-plt.ylim(0, 5)
+plt.ylim(0, 8)
 maxfreq = 2*max(y)/(len(x)/2)
 # print(f" Plotting graph with {min(x)} - {max(x)} : {min(y)} - {max(y)}")
 # print(f" Got Max frequency at {maxfreq} Hz \n Samples : {len(x)} \n Amplitude {2*max(y)}")
