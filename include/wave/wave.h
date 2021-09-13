@@ -23,7 +23,7 @@ typedef struct header_file
 
 typedef struct header_file *header_p;
 
-vector<double> ReadWaveFile(string filename)
+vector<double> ReadWaveFile(string filename , bool Normalize=true)
 {
     // Reading wave files here
     vector<double> inSignal;
@@ -34,7 +34,7 @@ vector<double> ReadWaveFile(string filename)
     int nb;
     header_p meta = (header_p)malloc(sizeof(header));
     cout << "Reading file " << filename << endl;
-
+    float normality = Normalize ? 32768.0 : 1.0;
     if (infile)
     {
         fread(meta, 1, sizeof(header), infile);
@@ -43,7 +43,7 @@ vector<double> ReadWaveFile(string filename)
             nb = fread(buff16, 1, WINDOWLEN, infile);
             for (int i = 0; i < WINDOWLEN; i++)
             {
-                inSignal.push_back(buff16[i] / 32768.0);
+                inSignal.push_back(buff16[i] / normality);
             }
         }
     }

@@ -1,32 +1,54 @@
 #include "include/includes.h"
 using namespace std;
 
-double sinc(double x) {
-    if (x == 0) {
-        return 1;
-    } else {
-        return sin(x) / x;
-    }
-}
-
 int main(void)
 {
-    d_vec insig;
-    for(int i = 0; i < 256; i++)
-    {
-        insig.push_back(sin(2*M_PI*i/10) + sin(3*M_PI*i/10));
-    }
+    string fileName;
+    cout << "Enter the name of the file: ";
+    fileName = "./build/test.wav";
+    d_vec SignalFloats = ReadWaveFile(fileName);
 
+    //perform fft
     Fourier Process;
-    Process.timeDomainVal = insig;
-    d_vec freqDomain = Process.RFFT();
-    d_vec freqs = Process.FFT_FREQS(freqDomain.size());
-    d_vec timeDomain = Process.RIFFT();
-    ofstream myFile;
-    myFile.open("test2.txt");
-    for (int i = 0; i < (int)timeDomain.size()/2; i++)
-    {
-        myFile << freqs[i] << "," << freqDomain[i]  << endl;
+    int WINDOW = 512;
+
+    d_vec freqDomain; 
+    d_vec freq_vals; 
+
+
+    // Hamming window generation
+    d_vec HammingWindow = hamming_window(WINDOW); 
+
+    for(int fftsamp = 0; fftsamp < SignalFloats.size(); fftsamp += (int)WINDOW/2){ 
+    
+        // time domain signal generation
+        d_vec Signal = slicer(SignalFloats,fftsamp,WINDOW);
+        
+
+        // Multiplying the two signals
+        d_vec convolvedSignal = convolve(Signal, HammingWindow);
+        Process.timeDomainVal = convolvedSignal;
+
+
+        // perform Fourier
+        freqDomain = Process.RFFT();
+        freq_vals = Process.FFT_FREQS(WINDOW);
+
+        //plotting
+        {
+            cout << "Writing Values" <<  endl; 
+            ofstream myFile;
+            myFile.open("buffer.txt");
+            for (int i = 0; i < (int)WINDOW; i++)
+            {
+                myFile << i << "," << freqDomain[i]  << endl;
+            }
+            myFile.close();
+            string mycmd = "python plotting.py buffer.txt"; //+ to_string((int)start/WINDOW);
+            system(mycmd.c_str());
+        }
+
     }
-    myFile.close();
-} 
+    
+
+}

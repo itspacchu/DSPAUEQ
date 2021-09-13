@@ -7,7 +7,6 @@ int main(void)
     cout << "Enter the name of the file: ";
     fileName = "./build/test.wav";
     d_vec SignalFloats = ReadWaveFile(fileName);
-    cout << SignalFloats.size() << endl;
 
     //perform fft
     Fourier Process;
@@ -21,11 +20,8 @@ int main(void)
     d_vec HammingWindow = hamming_window(WINDOW); 
 
     // time domain signal generation
-    d_vec Signal;
-    for(int i = 0; i < WINDOW; i++)
-    {
-        Signal.push_back(10*sin(TWOPI*i/(0.4*WINDOW)) + 5*sin(TWOPI*i/(0.05*WINDOW)) + 2*sin(TWOPI*i/(0.1*WINDOW)));
-    }
+    d_vec Signal = slicer(SignalFloats,0,WINDOW);
+    
 
     // Multiplying the two signals
     d_vec convolvedSignal = convolve(Signal, HammingWindow);
@@ -43,7 +39,7 @@ int main(void)
         myFile.open("buffer.txt");
         for (int i = 0; i < (int)WINDOW; i++)
         {
-            myFile << i  << "," << convolvedSignal[i]  << endl;
+            myFile << i << "," << freqDomain[i]  << endl;
         }
         myFile.close();
         string mycmd = "python plotting.py buffer.txt"; //+ to_string((int)start/WINDOW);

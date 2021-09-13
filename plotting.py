@@ -1,9 +1,8 @@
-import sys
-import os
-import csv
+import sys ,os
 import matplotlib.pyplot as plt
-import pprint
-# csv file name
+import numpy as np
+
+
 filename = str(sys.argv[1])
 try:
     indx = str(sys.argv[2])
@@ -20,11 +19,11 @@ for i in myfile.readlines():
 myfile.close()
 os.system('rm ' + filename)
 if(len(x) <= 64):
-    plt.stem(x,y)
+    plt.stem(x,np.log(y))
 else:
-    plt.plot(x,y)
+    plt.plot(x,np.abs(np.log10(y)))
 plt.xlim(min(x), max(x))
-plt.ylim(min(y), max(y))
+#plt.ylim(min(y), max(y))
 maxfreq = 2*max(y)/(len(x)/2)
 print(f" Plotting graph with {min(x)} - {max(x)} : {min(y)} - {max(y)}")
 print(f" Got Max frequency at {maxfreq} Hz \n Samples : {len(x)} \n Amplitude {2*max(y)}")

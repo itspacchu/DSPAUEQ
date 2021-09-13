@@ -11,10 +11,13 @@ using namespace std;
  * 
  */
 
-d_vec slicer(d_vec x, int start, int end){
-   d_vec y(end-start);
-   for(int i=start; i<end; i++)
-      y[i-start] = x[i];
+
+
+// Input : Vector Floats , Starting Offset (default = 0) , WINDOW SIZE (default = 512)
+d_vec slicer(d_vec x, int offset=0, int WINDOW=512){
+   d_vec y(WINDOW);
+   for(int i=offset; i<offset+WINDOW; i++)
+      y[i - offset] = x[i];
    return y;
 }
 
