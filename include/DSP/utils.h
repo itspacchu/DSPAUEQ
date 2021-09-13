@@ -1,6 +1,7 @@
 #include <complex>
 #include <vector>
 #include <algorithm>
+#include "../tqdm/tqdm.h"
 using namespace std;
 
 #define comp_vec vector<complex<double>>
@@ -11,14 +12,28 @@ using namespace std;
  * 
  */
 
+tqdm pbar; // tqdm is a utility
 
-
-// Input : Vector Floats , Starting Offset (default = 0) , WINDOW SIZE (default = 512)
+/*
+Substring slicing the signal based on offset and window length
+input : vector<double> x,  int inputOffset (default 0) , int WindowSize (default 512)
+*/
 d_vec slicer(d_vec x, int offset=0, int WINDOW=512){
    d_vec y(WINDOW);
    for(int i=offset; i<offset+WINDOW; i++)
       y[i - offset] = x[i];
    return y;
+}
+
+/*
+Adds additional samples between points aka Interpolation
+source : http://paulbourke.net/miscellaneous/interpolation/
+
+input  : vector<double> in , float resample
+output : new interpolated signal
+*/
+d_vec lerp(d_vec in,float resample){
+   // need a linear interpolator
 }
 
 bool isPowerOfTwo(int n) // cuz fft really likes to simp powers of 2 values

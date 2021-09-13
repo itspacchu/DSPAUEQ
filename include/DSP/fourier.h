@@ -10,6 +10,7 @@ double pi = M_PI;
 double pi = 4 * atan(1.0);
 #endif
 
+
 /*
  Source of this algo :O
  https://youtu.be/h7apO7q16V0
@@ -78,6 +79,7 @@ private:
             for(int k = input.size(); k < pow(2,pow2) ; k++){
                 returnarr.push_back(0.0);
             }
+            cout << "Padded zeros ..." << endl;
             return returnarr;
         }
     }
