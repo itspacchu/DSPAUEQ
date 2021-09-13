@@ -24,11 +24,11 @@ class Fourier
 private:
     d_vec FREQS_BY_LEN(int n, double fs = 1.0)
     {
-        d_vec freqs;
-        for (int i = 0; i < fs/2; i+=fs/n){
+        d_vec freqs(n);
+        for (int i = 0; i < (int)fs/2; i+=fs/n){
             freqs.push_back(i);
         }
-        for (int i = 1; i < fs/2; i+=fs/n){
+        for (int i = 1; i < (int)fs/2; i+=fs/n){
             freqs.push_back(-i);
         }
         return freqs;

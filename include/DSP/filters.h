@@ -14,6 +14,15 @@ d_vec hamming_window(int N){
     }
     return w;
 }
+
+d_vec sinusoid(int N){
+    d_vec w(N);
+    for(int i=0; i<N; i++){
+        w[i] = sin(TWOPI*i/N);
+    }
+    return w;
+}
+
 // Hanning Window (N-point)
 d_vec hanning_window(int N){
     d_vec w(N);
@@ -31,6 +40,13 @@ d_vec blackman_window(int N){
     return w;
 }
 
+d_vec rectangular_window(int N){
+    d_vec w(N);
+    for(int i=0; i<N; i++){
+        w[i] = 1;
+    }
+    return w;
+}
 
 // Convolves two vectors of same length
 d_vec convolve(d_vec x, d_vec w){

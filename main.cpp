@@ -3,10 +3,8 @@ using namespace std;
 
 int main(void)
 {
-    //convert Vector float to complex
     string fileName;
     cout << "Enter the name of the file: ";
-    //cin >> fileName;
     fileName = "./build/test.wav";
     d_vec SignalFloats = ReadWaveFile(fileName);
     cout << SignalFloats.size() << endl;
@@ -14,53 +12,41 @@ int main(void)
     //perform fft
     Fourier Process;
     int WINDOW = 512;
-    //int start;
-    //cin >> start;
-    cout << SignalFloats.size() <<  endl; 
+
     d_vec freqDomain; 
     d_vec freq_vals; 
 
-    d_vec HammingWindow = blackman_window(WINDOW); //hamming_window(WINDOW);
+
+    // Hamming window generation
+    d_vec HammingWindow = hamming_window(WINDOW); 
+
+    // time domain signal generation
     d_vec Signal;
     for(int i = 0; i < WINDOW; i++)
     {
-        Signal.push_back(rand()%100);
+        Signal.push_back(10*sin(TWOPI*i/(0.4*WINDOW)) + 5*sin(TWOPI*i/(0.05*WINDOW)) + 2*sin(TWOPI*i/(0.1*WINDOW)));
     }
+
+    // Multiplying the two signals
     d_vec convolvedSignal = convolve(Signal, HammingWindow);
-    /*
-    for(int start = 0 ; start < 512; start++){
-        Process.timeDomainVal = convolve_window(slicer(SignalFloats, start, start+WINDOW), HammingWindow);
+    Process.timeDomainVal = convolvedSignal;
 
-        // cout << Process.timeDomainVal.size() << endl;
-        // for (int k = start; k < start + 4; k++)
-        // {
-        //     cout << Process.timeDomainVal[k] << endl;
-        // }
-        // cout << "..." << Process.timeDomainVal.size() << endl;
 
-        freqDomain = Process.RFFT();
-        freq_vals = Process.FFT_FREQS(freqDomain.size(),44100.0);
+    // perform Fourier
+    freqDomain = Process.RFFT();
+    freq_vals = Process.FFT_FREQS(WINDOW);
+
+    //plotting
+    {
+        cout << "Writing Values" <<  endl; 
         ofstream myFile;
         myFile.open("buffer.txt");
-        for (int i = start; i < (int)(start+WINDOW); i++)
+        for (int i = 0; i < (int)WINDOW; i++)
         {
-            myFile << i-start << "," << freqDomain[i]  << endl;
+            myFile << i  << "," << convolvedSignal[i]  << endl;
         }
         myFile.close();
-        
         string mycmd = "python plotting.py buffer.txt"; //+ to_string((int)start/WINDOW);
         system(mycmd.c_str());
-    */
-    Process.timeDomainVal = HammingWindow;
-    freqDomain = Process.RFFT();
-    ofstream myFile;
-    myFile.open("buffer.txt");
-    for (int i = 0; i < WINDOW; i++)
-    {
-        myFile << i << "," << freqDomain[i]  << endl;
     }
-    myFile.close();
-    
-    string mycmd = "python plotting.py buffer.txt"; //+ to_string((int)start/WINDOW);
-    system(mycmd.c_str());
 }

@@ -29,4 +29,4 @@ int main(void)
         myFile << freqs[i] << "," << freqDomain[i]  << endl;
     }
     myFile.close();
-}
+} 
