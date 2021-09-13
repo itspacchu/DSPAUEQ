@@ -42,7 +42,8 @@ The goal is to perform signal analysis and filtering using Discrete Fourier tran
 
 
 ### FFT
+Song's FFT
+![image](https://user-images.githubusercontent.com/37984032/133134303-9336843c-6416-4ca1-a132-978d81c93de8.png)
 
-![image](https://user-images.githubusercontent.com/37984032/133049727-0e9ae5f4-6ce1-422e-85cd-003c00fffb21.png)
 
 
