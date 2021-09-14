@@ -18,6 +18,17 @@ d_vec slicer(d_vec x, int offset=0, int WINDOW=512){
    return y;
 }
 
+d_vec print_vec(d_vec x){
+   for(int i=0; i<x.size(); i++){
+      if(x[i] == 0){
+         continue;
+      }
+      cout << x[i] << " ";
+   }
+   cout << endl;
+   return x;
+}
+
 double LinearInterpolate(double y1,double y2,double mu)
 {
    return(y1*(1-mu)+y2*mu);
@@ -88,6 +99,15 @@ vector<complex<double>> real2complex(vector<double> RealArr)
    for (int i = 0; i < RealArr.size(); i++)
    {
       retarr.push_back(complex<double>(RealArr[i], 0)); // indx1 + j0
+   }
+   return retarr;
+}
+
+vector<complex<double>> overlapadd(vector<complex<double>> myFFTOUTPUT, vector<complex<double>> myFFTINPUT){
+   vector<complex<double>> retarr;
+   for (int i = 0; i < myFFTOUTPUT.size(); i++)
+   {
+      retarr.push_back(myFFTOUTPUT[i] + myFFTINPUT[i]);
    }
    return retarr;
 }
