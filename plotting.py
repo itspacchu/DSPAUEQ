@@ -27,17 +27,17 @@ plt.style.use('fivethirtyeight')
 if(len(x) <= 64):
     plt.stem(x,y)
 else:
-    plt.plot(x,np.log(np.abs(y)),linewidth=2)
+    plt.plot(np.log10(x),np.log10(np.abs(y)),linewidth=2)
     try:
-        plt.plot(x,np.log(np.abs(z)),linewidth=2)
-        plt.plot(x,np.abs(k),'--',linewidth=2)
+        plt.plot(np.log10(x),np.log10(np.abs(z)),linewidth=2)
+        plt.plot(np.log10(x),np.log10(np.abs(k)),'--',linewidth=2)
     except:
         pass
-plt.xlim(min(x), max(x))
-plt.ylim(0, 8)
+plt.xlim(min(np.log10(x)), max(np.log10(x)))
+plt.ylim(-2, 2)
 maxfreq = 2*max(y)/(len(x)/2)
 # print(f" Plotting graph with {min(x)} - {max(x)} : {min(y)} - {max(y)}")
 # print(f" Got Max frequency at {maxfreq} Hz \n Samples : {len(x)} \n Amplitude {2*max(y)}")
 plt.legend(["Original Freq Response", "EQ Gain Freq Response" , "EQ Gain [Cubic Interpolated]"])
-plt.title("EQ Signal synthesis")
-plt.savefig("./images/" + filename.split('.')[0] + '.png',dpi=200);
+plt.title("EQ Signal synthesis LOG")
+plt.savefig("./images/" + filename.split('.')[0] + indx + '.png',dpi=200);
