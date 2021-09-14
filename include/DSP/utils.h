@@ -1,18 +1,11 @@
 #include <complex>
 #include <vector>
 #include <algorithm>
-#include "../tqdm/tqdm.h"
 using namespace std;
 
 #define comp_vec vector<complex<double>>
 #define d_vec vector<double>
 
-/*
- *   Utility
- * 
- */
-
-tqdm pbar; // tqdm is a utility
 
 /*
 Substring slicing the signal based on offset and window length
@@ -56,6 +49,10 @@ d_vec Interpolate(d_vec in,int upsample,int downsample=1){
    return retArr;
 }
 
+float compl_to_float(complex<double> c){
+   return c.real();
+}
+
 bool isPowerOfTwo(int n) // cuz fft really likes to simp powers of 2 values
 {
    return (ceil(log2(n)) == floor(log2(n))) && (n != 0);
@@ -85,7 +82,7 @@ vector<double> DivByN(vector<double> myFFTOUTPUT_abs, int N = 0)
    return DivbyNReturn;
 }
 
-vector<complex<double>> ConvertToComplex(vector<double> RealArr)
+vector<complex<double>> real2complex(vector<double> RealArr)
 {
    vector<complex<double>> retarr;
    for (int i = 0; i < RealArr.size(); i++)

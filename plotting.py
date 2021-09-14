@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+csfont = {'fontname':'Bookerly'}
+
 filename = str(sys.argv[1])
 try:
     indx = str(sys.argv[2])
@@ -23,14 +25,16 @@ for i in myfile.readlines():
 
 myfile.close()
 #os.system('rm ' + filename)
-plt.style.use('fivethirtyeight')
+plt.style.use('./include/dracula.mplstyle')
 if(len(x) <= 64):
+    
     plt.stem(x,y)
 else:
-    plt.plot(np.log10(x),np.log10(np.abs(y)),linewidth=2)
+
+    plt.plot(np.log10(x),np.log10(np.abs(y)),linewidth=2.5)
     try:
-        plt.plot(np.log10(x),np.log10(np.abs(z)),linewidth=2)
-        plt.plot(np.log10(x),np.log10(np.abs(k)),'--',linewidth=2)
+        plt.plot(np.log10(x),np.log10(np.abs(z)),linewidth=2.5)
+        plt.plot(np.log10(x),np.log10(np.abs(k)),'--',linewidth=2.5)
     except:
         pass
 plt.xlim(min(np.log10(x)), max(np.log10(x)))
@@ -38,6 +42,25 @@ plt.ylim(-2, 2)
 maxfreq = 2*max(y)/(len(x)/2)
 # print(f" Plotting graph with {min(x)} - {max(x)} : {min(y)} - {max(y)}")
 # print(f" Got Max frequency at {maxfreq} Hz \n Samples : {len(x)} \n Amplitude {2*max(y)}")
-plt.legend(["Original Freq Response", "EQ Gain Freq Response" , "EQ Gain [Cubic Interpolated]"])
-plt.title("EQ Signal synthesis LOG")
-plt.savefig("./images/" + filename.split('.')[0] + indx + '.png',dpi=200);
+plt.rcParams["font.family"] = "Bookerly"
+plt.axis('off')
+plt.legend(["Original Freq Response", "EQ Gain Freq Response" , "EQ Gain [Cubic Interpolated]"],loc ="lower left")
+plt.title("FFT Equalizer filtering",**csfont)
+plt.xlabel("log(freq)",**csfont)
+plt.ylabel("log(amplitude)",**csfont)
+plt.figtext(0.9,0.12, f"Blackman windowing \n512 freq_bin\n{indx}_index\n{round(maxfreq,2)} Hz normalized max", ha="right", fontsize=11)
+plt.tick_params(
+    axis='x',          # changes apply to the x-axis
+    which='both',      # both major and minor ticks are affected
+    bottom=False,      # ticks along the bottom edge are off
+    top=False,         # ticks along the top edge are off
+    labelbottom=False) # labels along the bottom edge are off
+
+plt.tick_params(
+    axis='y',          # changes apply to the x-axis
+    which='both',      # both major and minor ticks are affected
+    bottom=False,      # ticks along the bottom edge are off
+    top=False,         # ticks along the top edge are off
+    labelbottom=False) # labels along the bottom edge are off
+
+plt.savefig("./images/" + filename.split('.')[0] + indx + '.png',dpi=250,bbox_inches='tight');
