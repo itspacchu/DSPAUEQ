@@ -1,3 +1,5 @@
+// DEPRECATED
+
 #include <complex>
 #include <vector>
 #include <algorithm>
@@ -89,14 +91,39 @@ public:
     comp_vec freqDomainVal{};
 
     Fourier() {}
-    comp_vec FFT()
+    comp_vec FFT_REC(comp_vec arr)
     {
-        if (timeDomainVal.empty())
+        // needs 2^n no of samples input!!
+        int n = arr.size();
+        if (n == 1)
         {
-            throw 404;
+            return arr;
         }
-        freqDomainVal = FFT_REC(ConvertToComplex(FixPower2Issue(timeDomainVal)));
-        return freqDomainVal;
+        // split into even and odd subsums
+        int half = n / 2;
+        comp_vec Xeven(half, 0);
+        comp_vec Xodd(half, 0);
+
+        for (int i = 0; i != half; i++)
+        {
+            Xeven[i] = arr[2 * i];
+            Xodd[i] = arr[2 * i + 1];
+        }
+
+        comp_vec Feven(half, 0);
+        Feven = FFT_REC(Xeven);
+        comp_vec Fodd(half, 0);
+        Fodd = FFT_REC(Xodd);
+
+        // need a single sample at end
+        comp_vec freqbin(n, 0);
+        for (int k = 0; k != half; k++)
+        {
+            complex<double> cmpexp = polar(1.0, -2 * pi * k / n) * Fodd[k];
+            freqbin[k] = Feven[k] + cmpexp;
+            freqbin[k + half] = Feven[k] - cmpexp;
+        }
+        return freqbin;
     }
 
     /*
@@ -127,7 +154,7 @@ public:
             cout << "Signal is not Power of 2" << endl;
             timeDomainVal = FixPower2Issue(timeDomainVal);
         }
-        freqDomainVal = FFT_REC(ConvertToComplex(timeDomainVal));
+        freqDomainVal = FFT_REC(real2complex(timeDomainVal));
         return CmpMagnitude(freqDomainVal);
     }
 

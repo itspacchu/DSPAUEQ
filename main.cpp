@@ -5,15 +5,15 @@ using namespace std;
 int main(void)
 {
     int imtrack = 0;
-    d_vec freq_vals; 
-    d_vec eq_filtered;
-    d_vec filtered_time;
-    d_vec output_buffer;
-    d_vec freqDomain; 
+    comp_vec freq_vals; 
+    comp_vec eq_filtered;
+    comp_vec filtered_time;
+    comp_vec output_buffer;
+    comp_vec freqDomain; 
 
     int WINDOW_SIZE=2048;
 
-    d_vec EQ_SETTINGS = {1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0};
+    d_vec EQ_SETTINGS = {1.0,0.0,3.0,0.0,0.0,0.0,0.0,1.0,1.0};
     d_vec EQ_INTERPOLATED = rev_flip_append(Interpolate(EQ_SETTINGS,128)); //gets me 256 samples
 
 
@@ -27,8 +27,7 @@ int main(void)
     }
 
 
-    //perform fft
-    Fourier Process;
+    ComplexFourier cfourier;
     int win_val = 0;
 
     /*
@@ -47,7 +46,7 @@ int main(void)
 
 
         // Hamming window generation
-        d_vec HammingWindow = blackman_window(WINDOW); 
+        d_vec HammingWindow = rectangular_window(WINDOW); 
 
         // time domain signal generation
         d_vec Signal = windowed_signal;
@@ -55,26 +54,20 @@ int main(void)
 
         // Multiplying the two signals
         d_vec convolvedSignal = convolve(Signal, HammingWindow);
-        Process.timeDomainVal = convolvedSignal;
-
 
         // perform Fourier
-        freqDomain = Process.RFFT();
-        freq_vals = Process.FFT_FREQS(WINDOW);
+        freqDomain = cfourier.fft(real2complex(convolvedSignal));
 
         //EQ stuff goes here
-        eq_filtered = convolve(freqDomain,EQ_INTERPOLATED);
+        eq_filtered = cfourier.convolve(freqDomain,real2complex(EQ_INTERPOLATED));
 
         // perform Inverse Fourier
-        Process.freqDomainVal = ConvertToComplex(eq_filtered);
-        filtered_time = Process.RIFFT(); 
+        filtered_time = cfourier.ifft(eq_filtered);
 
         // perform windowing on ifft and shove it in
-        d_vec output_windowed_buffer = convolve(filtered_time,HammingWindow);
-        if(imtrack%2 == 0){
-            for(int d = 0;d < output_windowed_buffer.size() ;d++){
-                output_buffer.push_back(output_windowed_buffer[d]);
-            }
+        comp_vec output_windowed_buffer = cfourier.convolve(filtered_time,real2complex(HammingWindow));
+        for(int d = 0;d < output_windowed_buffer.size() ;d++){
+            output_buffer.push_back(output_windowed_buffer[d]);
             cout << output_buffer.size() << endl;
         }
         imtrack++;
@@ -89,23 +82,8 @@ int main(void)
     outputAudioFile.setBitDepth (16);
     outputAudioFile.setNumSamplesPerChannel(output_buffer.size());
     for(int i=0;i<output_buffer.size();i++){
-        outputAudioFile.samples[0][i] = output_buffer[i];
+        outputAudioFile.samples[0][i] = compl_to_float(output_buffer[i]);
     }
     outputAudioFile.printSummary();
     outputAudioFile.save ("audioFile.wav");
 }
-
-        // //plotting
-        // {
-        //     ofstream myFile;
-        //     myFile.open("buffer.txt");
-        //     for (int i = 0; i < (int)WINDOW/2; i++)
-        //     {
-        //         //myFile << i << "," << Signal[i] << "," << filtered_time[i] << endl;
-        //         myFile << i+1 << "," << freqDomain[i] << "," << eq_filtered[i] << "," << EQ_INTERPOLATED[i] << endl;
-        //     }
-        //     myFile.close();
-        //     string mycmd = "python plotting.py buffer.txt " + to_string(imtrack);
-        //     imtrack++;
-        //     system(mycmd.c_str());
-        // }
