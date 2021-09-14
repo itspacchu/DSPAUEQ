@@ -23,6 +23,23 @@ The goal is to perform signal analysis and filtering using Discrete Fourier tran
 - Serial DAC Peripheral
 - SSD1306 OLED 
 
+## Epoch 1
+
+EQ is an 8 point Freq gain control
+
+```d_vec EQ_SETTINGS = {1.4,5.0,0.2,2.0,3.0,1.0,1.0,3.0,5.0};```
+
+this is being interpolated by using Cubic interpolation scheme ```Interpolate(EQ_SETTINGS,32)``` and is convoluted to the frequency response  
+
+```eq_filtered = convolve(freqDomain,EQ_INTERPOLATED);```
+
+Windowing ( Blackman ) Window is considered.
+
+![buffer](https://user-images.githubusercontent.com/37984032/133150628-860d5017-4823-46d7-a92f-6c0a1daba2a0.png)
+
+----
+
+
 ## Progress
 
 ### Got FFT to work
