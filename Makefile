@@ -11,5 +11,5 @@ build: ## make build
 .PHONY: test
 test: ## make test
 	echo "Using the testbench script"
-	g++ -std=c++17 -I./DSP ./tests/testbench.cpp -o build/testbenchOut
+	g++ -std=c++17 -I./DSP ./tests/test.cpp -o ./build/testOut && chmod -x ./build/testOut && bash ./build/testOut
 	
