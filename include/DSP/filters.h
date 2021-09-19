@@ -52,12 +52,13 @@ d_vec rectangular_window(int N){
 
 d_vec rev_flip_append(d_vec signal){
     d_vec retSig(signal.size()*2);
+
     for(int i=0;i<signal.size();i++){
         retSig[i] = signal[i];
+        retSig[i+signal.size()-1] = signal[signal.size()-i];
     }
-    for(int i=signal.size();i<2*signal.size();i++){
-        retSig[i] = signal[i-signal.size()+1];
-    }
+
+
     return retSig;
 }
 

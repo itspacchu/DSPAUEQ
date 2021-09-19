@@ -102,7 +102,6 @@ class ComplexFourier {
     */
     comp_vec fft(comp_vec arr) {
         if(isPowerOfTwo(arr.size())) {
-            cout << "ComplexFourier: Input sequence is a power of two" << endl;
             arr = complexFixPower2(arr);
         }
         return cfft(arr);
@@ -114,7 +113,6 @@ class ComplexFourier {
     */
     comp_vec ifft(comp_vec arr) {
         if(isPowerOfTwo(arr.size())) {
-            cout << "ComplexFourier: Input sequence is a power of two" << endl;
             arr = complexFixPower2(arr); 
         }
         comp_vec returnarr = cifft(arr);

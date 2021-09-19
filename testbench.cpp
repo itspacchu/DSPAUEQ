@@ -9,7 +9,7 @@ int main(void)
     d_vec SignalFloats = ReadWaveFile(fileName);
 
     //perform fft
-    Fourier Process;
+    cFourier Process;
     int WINDOW = 512;
 
     d_vec freqDomain; 
