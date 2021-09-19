@@ -23,6 +23,7 @@ The goal is to perform signal analysis and filtering using Discrete Fourier tran
 - Serial DAC Peripheral
 - SSD1306 OLED 
 
+
 ## Epoch 1
 
 EQ is an 8 point Freq gain control
@@ -36,6 +37,23 @@ this is being interpolated by using Cubic interpolation scheme ```Interpolate(EQ
 Windowing ( Blackman ) Window is considered.
 
 ![buffer](https://user-images.githubusercontent.com/37984032/133150628-860d5017-4823-46d7-a92f-6c0a1daba2a0.png)
+
+
+## Epoch 2
+
+Fixed a bug where filter was not being applied properly to negative frequencies leading to weird filtering issues
+
+### LOW PASS FILTER
+
+**LEFT** The filter is not being flipped
+**RIGHT** Is how the filter must be applied
+
+![image](https://user-images.githubusercontent.com/37984032/133925568-e8217efe-3022-47dd-b4bd-54bd8abb112b.png)
+
+**AUDACITY Freq plot**
+![image](https://user-images.githubusercontent.com/37984032/133925625-fff9489e-1535-4fd5-9162-d877d1cfea5c.png)
+
+Audio file generated is now sufficiently distortion free.
 
 ----
 
