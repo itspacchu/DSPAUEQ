@@ -76,5 +76,8 @@ Audio file generated is now sufficiently distortion free.
 ```(im a noob alright)```
 
 https://ccrma.stanford.edu/~jos/vguitar/Fitting_Filters_Matlab.html
+
 https://youtu.be/u8t-h31baFE
+
 https://dsp.stackexchange.com/questions/9340/building-a-low-pass-fft-filter-for-a-noisy-current-pulse-signal 
+
