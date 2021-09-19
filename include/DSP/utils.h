@@ -53,6 +53,7 @@ d_vec Interpolate(d_vec in,int upsample,int downsample=1){
    int n = 0;
    for(int i = 0;i < in.size()-1;i++){
       for(int j=0;j<upsample;j++){
+         //retArr[n] = CosineInterpolate(in[i],in[i+1],(float)j/(float)upsample);
          retArr[n] = CosineInterpolate(in[i],in[i+1],(float)j/(float)upsample);
          n++;
       }
