@@ -13,3 +13,7 @@ test: ## make test
 	echo "Using the testbench script"
 	g++ -std=c++17 -I./DSP ./tests/testbench.cpp -o build/testbenchOut
 	
+.PHONY: realtime
+rtime: ## make test
+	echo "Realtime ffmpeg playback"
+	g++ -std=c++17 -I./DSP ./realtime.cpp -o build/realtime

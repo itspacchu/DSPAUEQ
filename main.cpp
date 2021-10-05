@@ -79,7 +79,7 @@ int main()
                 myFile << i << "," << freqDomain[i].real() << "," << EQ_INTERPOLATED[i] << "," << eq_filtered[i].real()  << endl;
             }
             myFile.close();
-            string mycmd = "python plotting.py buffer.txt"; //+ to_string((int)start/WINDOW);
+            string mycmd = "python /utils/plotting.py buffer.txt"; //+ to_string((int)start/WINDOW);
             system(mycmd.c_str());
         }
     
