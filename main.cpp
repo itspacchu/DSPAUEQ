@@ -12,14 +12,14 @@ int main()
 
     const int WINDOW_SIZE=2048;
 
-    d_vec EQ_SETTINGS = {1.4 ,1.8 ,1.7 ,1.0 ,1.2 ,1.0 ,0.5 ,1.8, 0.2}; // EXTREME LOW PASS BOIS
+    d_vec EQ_SETTINGS = {0.0 ,1.0 ,0.0 ,0.0 ,0.0 ,0.0 ,0.0 ,0.0,0.0}; // EXTREME LOW PASS BOIS
     //d_vec EQ_SETTINGS = {0.0 ,0.0 ,0.0 ,0.0 ,1.0 ,1.0 ,1.0 , 1.0, 1.0}; //HIGH PASS BOIS
     d_vec EQ_INTERPOLATED = rev_flip_append(Interpolate(EQ_SETTINGS,WINDOW_SIZE/16)); //gets me 256 samples
 
 
     //Audio file input stuff and conversions
     AudioFile<double> songfile;
-    songfile.load("input-small.wav");
+    songfile.load("build/smolnut.wav");
     int sizeOfBuffer = songfile.getNumSamplesPerChannel();
     d_vec SignalFloats;
     for(int s = 0; s < sizeOfBuffer ;s++){
@@ -79,7 +79,7 @@ int main()
                 myFile << i << "," << freqDomain[i].real() << "," << EQ_INTERPOLATED[i] << "," << eq_filtered[i].real()  << endl;
             }
             myFile.close();
-            string mycmd = "python3 ./utils/plotting.py buffer.txt"; //+ to_string((int)start/WINDOW);
+            string mycmd = "python /utils/plotting.py buffer.txt"; //+ to_string((int)start/WINDOW);
             system(mycmd.c_str());
         }
     
@@ -95,5 +95,5 @@ int main()
         outputAudioFile.samples[0][i] = output_buffer[i];
     }
     outputAudioFile.printSummary();
-    outputAudioFile.save ("main_file.wav");
+    outputAudioFile.save ("test.wav");
 }

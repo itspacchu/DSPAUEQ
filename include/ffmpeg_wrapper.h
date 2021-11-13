@@ -1,4 +1,5 @@
 using namespace std;
+
 class EQ_FIL_MOD {
     public:
     //http://ffmpeg.org/ffmpeg-filters.html#equalizer
@@ -87,6 +88,7 @@ class FFMPEG {
             genCommand += " -hide_banner -loglevel error";
         }
         if(playlive){
+            //genCommand += "-f wav pipe:1 | ffplay -nodisp -autoexit -i -";
             genCommand += "-f wav pipe:1 | ffplay -i -";
         }
         if(debug){

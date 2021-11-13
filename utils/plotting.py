@@ -24,25 +24,21 @@ for i in myfile.readlines():
         y.append(float(thing[1].replace("\n",""))+1.0)  
 
 myfile.close()
-# os.system('rm ' + filename)
+os.system('rm ' + filename)
 plt.style.use('./include/dracula.mplstyle')
 if(len(x) <= 64):
     
     plt.stem(x,y)
 else:
-    temp = z/np.max(z)
-    temp2 = k/np.max(k)
-    temp3 = y/np.max(y)
 
-    plt.plot(x,np.abs(temp3),linewidth=.5)
+    plt.plot(x,np.abs(y),linewidth=2.5)
     try:
-        plt.plot(x,np.abs(temp),linewidth=2.5) ## eq
-        plt.plot(x,np.abs(temp2),'--',linewidth=1) 
-        pass
+        plt.plot(x,np.abs(z),linewidth=2.5)
+        plt.plot(x,np.abs(k),'--',linewidth=2.5)
     except:
         pass
-plt.xlim(min(x), max(x)/2)
-plt.ylim(0, 2)
+plt.xlim(min(x), max(x))
+plt.ylim(0, max(y))
 maxfreq = 2*max(y)/(len(x)/2)
 # print(f" Plotting graph with {min(x)} - {max(x)} : {min(y)} - {max(y)}")
 # print(f" Got Max frequency at {maxfreq} Hz \n Samples : {len(x)} \n Amplitude {2*max(y)}")

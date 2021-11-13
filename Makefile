@@ -7,8 +7,6 @@ help: ## Show this help
 
 .PHONY: build
 build: ## make build
-	echo "Using the main script"
-	g++ -std=c++17 -I./DSP ./main.cpp -o build/mainOut
 
 .PHONY: test
 test: ## make test
@@ -19,7 +17,3 @@ test: ## make test
 rtime: ## make test
 	echo "Realtime ffmpeg playback"
 	g++ -std=c++17 -I./DSP ./realtime.cpp -o build/realtime
-
-.PHONY: run main
-run: ## run main
-	./build/mainOut
