@@ -40,6 +40,7 @@ class FIR_EQ_FIL_MOD {
         return this->command_gen + "'";
     }
 };
+
 class FFMPEG {
     public:
     string song_name = "";
@@ -49,6 +50,7 @@ class FFMPEG {
     FIR_EQ_FIL_MOD filterboi;
     bool verbose = false;
     bool playlive = false;
+    bool playfm = false;
 
     FFMPEG(string song_name,string song_output){
         this->song_name = song_name;
@@ -69,6 +71,11 @@ class FFMPEG {
         this->run(debug);
     }
 
+    void play_fm(bool debug=false){
+	this->playlive=true;
+	this->playfm=true;
+	this->run(debug);
+    }
     void run(bool debug=false){
         string commandstream = "";
         if(this->song_name != ""){
@@ -87,9 +94,10 @@ class FFMPEG {
         if(verbose){
             genCommand += " -hide_banner -loglevel error";
         }
-        if(playlive){
-            //genCommand += "-f wav pipe:1 | ffplay -nodisp -autoexit -i -";
-            genCommand += "-f wav pipe:1 | ffplay -i -";
+	if(playfm){
+	    genCommand += "-nostdin -f wav - | fm_transmitter -f 96 -";
+	}else if(playlive){
+            genCommand += "-f wav pipe:1 | ffplay -nodisp -autoexit -i -";
         }
         if(debug){
             cout << genCommand << endl;

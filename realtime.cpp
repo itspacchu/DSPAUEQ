@@ -15,7 +15,7 @@ int main(int argc, char** argv){
         cout << "Usage: ./realtime <input_file> <eqbands> "<<endl;
         return 0;
     }
-
+    //test
     FFMPEG source =  FFMPEG(songname,songout);
     cout << "Computing Frequencies for " << freqBands << " bands\n";
 
@@ -27,6 +27,13 @@ int main(int argc, char** argv){
         source.FFMPEG::addFilter(currFreq,gain);
         cout << "\n";
     }
-    source.play_live(false);
+    cout << "How do you want to play it\n- (F)m mode (96 Khz)\n- (l)ive mode : check for bcm soundcard" << endl;
+    char optn;
+    cin >> optn;
+    if(optn == 'l')
+    	source.play_live(false);
+    else if(optn == 'F'){
+        source.play_fm(true);
+    }
 }
 
